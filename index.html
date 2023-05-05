@@ -1,0 +1,49 @@
+<head>
+    <script type="module">
+        /*
+        This demo shows how to go draw a spinning tent at >60 fps.
+        The trick is shipping the entire mesh once instead of shipping every triangle every frame.
+        */
+        
+        import { mat4, vec4, vec3 } from 'https://cdn.jsdelivr.net/npm/gl-matrix@3.4.3/+esm'
+        import {EggHunt} from "./EggHunt.js";
+            
+        let game;
+
+        function init() {
+            // Step 1. initialize the canvas
+            const canvas = document.getElementById('EggHunt');
+
+            game = new EggHunt(canvas, keyMap);
+            // Step 5. call draw() repeatedly
+            setInterval(update, 0);
+        }
+        
+        function update() {
+            const start = performance.now();
+            document.getElementById('cameraPos').innerHTML = `Camera Position: (${game.camera})`;
+            game.mainloop();
+        
+            const elapsed = performance.now() - start;
+            //console.log("Draw() took " + elapsed + "ms");
+        }
+        
+        window.onload = init;
+
+        const keyMap = {};
+
+        window.onkeyup = function(e) {
+            keyMap[e.key] = false;
+        };
+        
+        window.onkeydown = function(e) {
+            keyMap[e.key] = true;
+        }
+        
+    </script>
+    </head>
+    <body>
+        <p>Use the arrow keys to move the bunny!</p>
+        <p id="cameraPos"></p>
+        <canvas style="image-rendering:pixelated; border:1px solid black" id="EggHunt"></canvas>
+    </body>
